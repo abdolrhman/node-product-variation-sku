@@ -37,6 +37,14 @@ $ npm start
 ```
 
 
+```$xslt
+route : localhost:8000/public/skulist    
+request type: "GET"
+
+ex : localhost:8000/public/skulist?productname=Coffee pods&variant=small
+
+```
+
 ## Folder Structure
 
 the project has 4 main directories:

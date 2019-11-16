@@ -30,6 +30,6 @@ const VariantValue = require('./VariantValue');
  * ex: red-wool , red  ///
  */
 ProductVariant.belongsToMany(VariantValue, {
-  as: 'variants',
+  as: 'variantsValues',
   through: 'product_details',
 });

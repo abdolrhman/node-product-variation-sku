@@ -87,36 +87,37 @@ const ProductController = () => {
 
 
   const skuList = async (req, res) => {
-    let coffee = req.query.coffee;
-    let pod = req.query.pod;
+    let productName = req.query.productname;
+    if (!productName) {
+      return res.status(404);
+    }
+    let productId = await Product.findOne({
+      where: {
+        'name': productName
+      },
+      attributes: ['id']
+    });
+    productId = productId['dataValues']['id'];
 
-    let variantValue = req.query.variantValue;
-    // var options = { where: {} };
+    let variant = req.query.variant;
+
+    var options = { where: {} };
 
     try {
-
-      //get coffee or pod?
-      // const ;
-
-      const producct = await ProductVariant.findAll({
-        where:{
-          ProductId: 1
-        }
-      });
-      console.log('sadqadad', producct);
-      return res.status(200)
-        .json(producct[0]['dataValues']);
-      const ProductCoffeVarients = await ProductVariant.findAll({
+      const skuList = await ProductVariant.findAll({
         where: {
-          ProductId: 1,
-          attribute: ['sku'],
-          model: VariantValue,
-          as: 'variants',
-          where: { value: 'small' },
+          ProductId: productId,
         },
+        attribute: ['sku'],
+        include: [{
+          model: VariantValue,
+          as: 'variantsValues',
+          where: { value: variant },
+        }]
+
       });
       return res.status(200)
-        .json(ProductCoffeVarients);
+        .json(skuList);
     } catch (err) {
       console.log(err);
       return res.status(500)
