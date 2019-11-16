@@ -45,6 +45,21 @@ ex : localhost:8000/public/skulist?productname=Coffee pods&variant=small
 
 ```
 
+## Implementation Objective :-
+ 
+- Build Archticture for SKU As for any product, in which it  can be quired 
+by some variation (size, type, ...)
+- Seed Database for some SKU, with full cycle
+- The Cycle of databse archticture is : 
+    + Adding Productin products table
+    + Adding Variant name ex: Color, Material, type, etc ...
+    + Adding Variant Value : ex: (color, red) , (color, blue), (type, base) , (type, premium) etc ..
+    + Add Product Variant this will hold the (product id, sku)
+    + Add Product Denials this will hold (product-variant-id, variant-value-id)
+    + Mainly for most of the SKT queries it will be around this 3 tables
+    (productVariant, ProductDetails, variantValue)
+    + the rest of tables is for some other queries .
+
 ## Folder Structure
 
 the project has 4 main directories:
