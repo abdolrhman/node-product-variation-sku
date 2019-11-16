@@ -32,6 +32,7 @@ then
 $ npm i
 # to use mysql
 $ npm i mysql2 -S
+$ npm install
 # start the api
 $ npm start
 ```

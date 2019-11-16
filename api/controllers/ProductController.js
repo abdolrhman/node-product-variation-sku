@@ -1,4 +1,5 @@
 const sequelize = require('../../config/database');
+const Sequelize = require('sequelize');
 
 const Product = require('../models/Product');
 const Variant = require('../models/Variant');
@@ -65,15 +66,17 @@ const ProductController = () => {
         }];
       ProductVariant.bulkCreate(ProductVariants);
 
+
       // now we set the variation for this sku
       // const ProductDetials = [
       //   { VariantValueId: 1 },
       //   { ProductVariantId: 1 },
       // ];
 
+
+
       // eslint-disable-next-line max-len
-      // sequelize.query('insert into product_details(VariantValueId,ProductVariantId) values(1,1)');
-      // ProductDetail.bulkCreate(ProductDetials);
+      sequelize.query('insert into product_details(VariantValueId,ProductVariantId) values(1,1)');
 
       return res.json('Seeded Successfully');
     } catch (err) {
@@ -88,8 +91,9 @@ const ProductController = () => {
 
   const skuList = async (req, res) => {
     let productName = req.query.productname;
-    if (!productName) {
-      return res.status(404);
+    if (typeof productName == 'undefined') {
+      return res.status(404)
+        .json({ msg: 'please provide a product name' });
     }
     let productId = await Product.findOne({
       where: {
@@ -97,11 +101,14 @@ const ProductController = () => {
       },
       attributes: ['id']
     });
+    if (productId === null) {
+      return res.status(404)
+        .json({ msg: 'product not found' });
+    }
     productId = productId['dataValues']['id'];
 
     let variant = req.query.variant;
-
-    var options = { where: {} };
+    // var options = { where: {} };
 
     try {
       const skuList = await ProductVariant.findAll({
@@ -112,10 +119,11 @@ const ProductController = () => {
         include: [{
           model: VariantValue,
           as: 'variantsValues',
-          where: { value: variant },
+          where: { value: { [Sequelize.Op.in]: [variant] } },
         }]
 
       });
+
       return res.status(200)
         .json(skuList);
     } catch (err) {
