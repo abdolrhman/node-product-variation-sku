@@ -1,0 +1,53 @@
+{
+  "name": "node-product-variation-sku",
+  "version": "0.0.0",
+  "author": "Abdulrahman <iwcw4i@gmail.com@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "prestart": "npm run drop-sqlite-db || true",
+    "start": "npm run nodemon",
+    "dev": "cross-env NODE_ENV=development node ./api/api.js",
+    "nodemon": "nodemon --exec npm run dev",
+    "create-sqlite-db": "shx touch ./db/database.sqlite",
+    "drop-sqlite-db": "shx rm ./db/database.sqlite",
+    "lint": "eslint ./api/. ./config/. ./test/.",
+    "prepush": "npm test",
+    "test": "npm run create-sqlite-db; cross-env NODE_ENV=testing jest --coverage; npm run drop-sqlite-db",
+    "test-ci": "jest --coverage --forceExit"
+  },
+  "jest": {
+    "globals": {
+      "__DEV__": true
+    },
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.18.2",
+    "core-js": "^2.6.9",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-routes-mapper": "^1.0.2",
+    "helmet": "^3.12.0",
+    "jsonwebtoken": "^8.2.1",
+    "mysql2": "^2.0.0",
+    "nodemailer": "^6.3.1",
+    "sequelize": "^6.0.0",
+    "sqlite3": "^4.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.1.4",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "husky": "^0.14.3",
+    "jest": "^24.8.0",
+    "nodemon": "^1.17.3",
+    "shx": "^0.2.2",
+    "supertest": "^3.0.0"
+  }
+}
